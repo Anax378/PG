@@ -3,16 +3,16 @@ package LevelParts;
 import Game.Main;
 import java.awt.*;
 
-public class Player extends Ball{
+public class Player extends Point {
 
     public Float[] velocity = new Float[]{3000f, 2000f};
     public Float[] acceleration = new Float[]{0f, 0f};
     public Float[] gravity = new Float[]{0f, 0f};
-    public Float[] friction = new Float[]{0.999f, 0.999f};
+    public Float[] friction = new Float[]{0.99f, 0.99f};
     public float bounceEfficiency = 0.7f;
     public int lastMouseClickCount = 0;
-    public float speedMod = 0.5f;
-    public float forceRadius = 2000;
+    public float speedMod = 0.2f;
+    public float forceRadius = 80000/radius;
 
 
     public float t = (1f/Main.tps)*speedMod;
@@ -25,12 +25,24 @@ public class Player extends Ball{
         acceleration[0] = 0f;
         acceleration[1] = 0f;
 
+        Main.scene.lineSegments.get(0).renderColor = new Color(0, 0, 0, 0);
+
         if(Main.w.isMouseDown){
             lastMouseClickCount = Main.w.mouseClickCount;
-            if(Main.w.label.getMousePosition() != null) {
-                Float[] forceVector = getForceVector(new Float[]{(float)Main.w.label.getMousePosition().x, (float)Main.w.label.getMousePosition().y}, position, forceRadius);
-                acceleration[0] = acceleration[0] + (forceVector[0]*-1);
-                acceleration[1] = acceleration[1] + (forceVector[1]*-1);
+            java.awt.Point mousePosition = Main.w.label.getMousePosition();
+            if(mousePosition != null) {
+
+                Main.scene.lineSegments.get(0).renderColor = Color.GREEN;
+
+
+                Float[] forceVector = getForceVector(new Float[]{(float)mousePosition.x, (float)mousePosition.y}, position, forceRadius);
+
+                Main.scene.lineSegments.get(0).p2[0] = (float) position[0] + forceVector[0]*0.001f*radius;
+                Main.scene.lineSegments.get(0).p2[1] = (float) position[1] + forceVector[1]*0.001f*radius;
+
+
+                acceleration[0] = acceleration[0] + (forceVector[0]);
+                acceleration[1] = acceleration[1] + (forceVector[1]);
             }
 
         }
@@ -48,14 +60,14 @@ public class Player extends Ball{
 
 
 
-        if(position[1]+velocity[1]*t > Main.height-radius || position[1]+velocity[1]*t < 0){
+        if(position[1]+velocity[1]*t > Main.height-radius || position[1]+velocity[1]*t < 0+radius){
             velocity[1] = velocity[1]*-1*bounceEfficiency;
             position[1] = position[1]+velocity[1]*t;
         }else{
             position[1] = position[1]+velocity[1]*t;
         }
 
-        if(position[0]+velocity[0]*t > Main.width-radius || position[0]+velocity[0]*t < 0){
+        if(position[0]+velocity[0]*t > Main.width-radius || position[0]+velocity[0]*t < 0+radius){
             velocity[0] = velocity[0]*-1*bounceEfficiency;
         }
         position[0] = position[0]+velocity[0]*t;

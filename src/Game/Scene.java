@@ -1,12 +1,17 @@
 package Game;
 
+import LevelParts.LineSegment;
 import LevelParts.Player;
 
+import javax.sound.sampled.Line;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Scene {
     public Player player;
+    public List<LineSegment> lineSegments = new ArrayList<>();
 
     public Scene(Player player){
         this.player = player;
@@ -29,7 +34,14 @@ public class Scene {
         g2d.dispose();
 
         image = player.renderOnImage(image);
+
+        for(int i = 0; i < lineSegments.size(); i++){image = lineSegments.get(0).renderOnImage(image);}
+
         return image;
+    }
+
+    public void add(Object o){
+        if(o instanceof LineSegment){lineSegments.add((LineSegment) o);}
     }
 
 }

@@ -1,5 +1,6 @@
 package Game;
 import Game.Window;
+import LevelParts.LineSegment;
 import LevelParts.Player;
 
 import java.awt.*;
@@ -18,8 +19,10 @@ public class Main {
     public static void main(String[] args){
         w = new Window(width, height);
 
-        player = new Player(new Float[]{300f, 300f}, 50f, Color.BLACK);
+        player = new Player(new Float[]{300f, 300f}, 10f, Color.BLACK);
         scene = new Scene(player);
+
+        scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));
 
 
 
