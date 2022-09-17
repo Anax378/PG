@@ -29,5 +29,14 @@ public class Ball {
         return image;
     }
 
+    public float cross(Float[] a, Float[] b){
+        return (a[0]*b[0]+a[1]*b[1]);
+    }
+    public float pyth(float a, float b){
+        return (float) Math.sqrt(a*a+b*b);
+    }
+
+
+
 
 }

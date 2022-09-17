@@ -7,11 +7,12 @@ public class Player extends Ball{
 
     public Float[] velocity = new Float[]{3000f, 2000f};
     public Float[] acceleration = new Float[]{0f, 0f};
-    public Float[] gravity = new Float[]{0f, 200f};
+    public Float[] gravity = new Float[]{0f, 0f};
     public Float[] friction = new Float[]{0.999f, 0.999f};
     public float bounceEfficiency = 0.7f;
-
-    public float speedMod = 3;
+    public int lastMouseClickCount = 0;
+    public float speedMod = 0.5f;
+    public float forceRadius = 2000;
 
 
     public float t = (1f/Main.tps)*speedMod;
@@ -23,6 +24,16 @@ public class Player extends Ball{
     public void tickUpdate(){
         acceleration[0] = 0f;
         acceleration[1] = 0f;
+
+        if(Main.w.isMouseDown){
+            lastMouseClickCount = Main.w.mouseClickCount;
+            if(Main.w.label.getMousePosition() != null) {
+                Float[] forceVector = getForceVector(new Float[]{(float)Main.w.label.getMousePosition().x, (float)Main.w.label.getMousePosition().y}, position, forceRadius);
+                acceleration[0] = acceleration[0] + (forceVector[0]*-1);
+                acceleration[1] = acceleration[1] + (forceVector[1]*-1);
+            }
+
+        }
 
         acceleration[0] = acceleration[0] + gravity[0];
         acceleration[1] = acceleration[1] + gravity[1];
@@ -51,6 +62,14 @@ public class Player extends Ball{
 
 
     }
+
+    public Float[]getForceVector (Float[] pos, Float[] centre, float radius){
+        Float[] dirVec = new Float[]{pos[0]-centre[0], pos[1] - centre[1]};
+        float absOfDirVec = pyth(dirVec[0], dirVec[1]);
+        float ratio = radius/absOfDirVec;
+        return new Float[]{dirVec[0]*ratio, dirVec[1]*ratio};
+    }
+
 
 
 

@@ -2,6 +2,8 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 public class Window {
@@ -14,6 +16,10 @@ public class Window {
 
     public int width;
     public int height;
+
+    public volatile boolean isMouseDown;
+
+    public volatile int mouseClickCount = 0;
 
     public Window(int width, int height){
         this.width = width;
@@ -35,7 +41,17 @@ public class Window {
         frame.setBackground(Color.BLACK);
         frame.setVisible(true);
 
+        frame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e){isMouseDown = true;mouseClickCount++;}
+            public void mouseReleased(MouseEvent e){isMouseDown = false;}
+
+        });
+
     }
+
+
+
 
     public void setImage(BufferedImage image){
         icon = new ImageIcon(image);
