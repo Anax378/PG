@@ -1,7 +1,7 @@
 package LevelParts;
 
 import Game.Main;
-import java.awt.*;
+import java.awt.* ;
 
 public class Player extends Point {
 
@@ -11,9 +11,9 @@ public class Player extends Point {
     public Float[] friction = new Float[]{0.99f, 0.99f};
     public float bounceEfficiency = 0.7f;
     public int lastMouseClickCount = 0;
-    public float speedMod = 0.2f;
+    public float defaultSpeedMod = 0.3f;
+    public float speedMod = defaultSpeedMod;
     public float forceRadius = 80000/radius;
-
 
     public float t = (1f/Main.tps)*speedMod;
 
@@ -22,6 +22,13 @@ public class Player extends Point {
     }
 
     public void tickUpdate(){
+
+        Main.scene.lineSegments.get(1).p2[0] = position[0]+velocity[0]*0.1f;
+        Main.scene.lineSegments.get(1).p2[1] = position[1]+velocity[1]*0.1f;
+
+        if(Main.w.isSpaceDown){speedMod = defaultSpeedMod/5;}else{speedMod = defaultSpeedMod;}
+        t = (1f/Main.tps)*speedMod;
+
         acceleration[0] = 0f;
         acceleration[1] = 0f;
 

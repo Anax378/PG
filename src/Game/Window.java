@@ -2,6 +2,8 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -18,6 +20,7 @@ public class Window {
     public int height;
 
     public volatile boolean isMouseDown;
+    public volatile boolean isSpaceDown;
 
     public volatile int mouseClickCount = 0;
 
@@ -46,6 +49,12 @@ public class Window {
             public void mousePressed(MouseEvent e){isMouseDown = true;mouseClickCount++;}
             public void mouseReleased(MouseEvent e){isMouseDown = false;}
 
+        });
+
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e){if(e.getKeyCode() == KeyEvent.VK_SPACE){isSpaceDown = true;}}
+            public void keyReleased(KeyEvent e){if(e.getKeyCode() == KeyEvent.VK_SPACE){isSpaceDown = false;}}
         });
 
     }

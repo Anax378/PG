@@ -35,7 +35,7 @@ public class Scene {
 
         image = player.renderOnImage(image);
 
-        for(int i = 0; i < lineSegments.size(); i++){image = lineSegments.get(0).renderOnImage(image);}
+        for(int i = 0; i < lineSegments.size(); i++){image = lineSegments.get(i).renderOnImage(image);}
 
         return image;
     }

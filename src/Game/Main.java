@@ -23,6 +23,7 @@ public class Main {
         scene = new Scene(player);
 
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));
+        scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.RED));
 
 
 
