@@ -2,6 +2,7 @@ package Game;
 import Game.Window;
 import LevelParts.LineSegment;
 import LevelParts.Player;
+import LevelParts.Triangle;
 
 import java.awt.*;
 
@@ -24,6 +25,7 @@ public class Main {
 
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.RED));
+        scene.add(new Triangle(new Float[]{300f, 300f}, 40, Color.RED));
 
 
 

@@ -36,6 +36,14 @@ public class Point {
         return (float) Math.sqrt(a*a+b*b);
     }
 
+    public boolean isColiding(Float[] position, float radius){
+        float a = position[0] - this.position[0];
+        float b = position[1] - this.position[1];
+        float dist = (float) Math.sqrt(a*a + b*b);
+
+        return dist < radius+this.radius;
+    }
+
 
 
 
