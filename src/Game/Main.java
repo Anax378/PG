@@ -1,8 +1,6 @@
 package Game;
-import Game.Window;
 import LevelParts.LineSegment;
 import LevelParts.Player;
-import LevelParts.Triangle;
 
 import java.awt.*;
 
@@ -21,11 +19,10 @@ public class Main {
         w = new Window(width, height);
 
         player = new Player(new Float[]{300f, 300f}, 10f, Color.BLACK);
-        scene = new Scene(player);
+        scene = new Scene(player, 20);
 
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.RED));
-        scene.add(new Triangle(new Float[]{300f, 300f}, 40, Color.RED));
 
 
 
@@ -34,7 +31,7 @@ public class Main {
         {
             w.setImage(scene.getFrame());
 
-            if((System.currentTimeMillis() - start) > 1000f/tps){
+            if((System.currentTimeMillis() - start) > (1000f/tps)){
                 scene.tickUpdate();
                 start = System.currentTimeMillis();
             }

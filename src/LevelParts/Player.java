@@ -5,7 +5,7 @@ import java.awt.* ;
 
 public class Player extends Point {
 
-    public Float[] velocity = new Float[]{3000f, 2000f};
+    public Float[] velocity = new Float[]{0f, 0f};
     public Float[] acceleration = new Float[]{0f, 0f};
     public Float[] gravity = new Float[]{0f, 0f};
     public Float[] friction = new Float[]{0.99f, 0.99f};
