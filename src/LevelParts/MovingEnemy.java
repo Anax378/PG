@@ -18,13 +18,13 @@ public class MovingEnemy extends Point{
         this.lifetime = lifetime+delay;
         this.path = path;
         ct = Main.scene.tickTime;
-        pathLine = new LineSegment(new Float[]{position[0], position[1]}, new Float[]{position[0] + path[0], position[1] + path[1]}, new Color(255, 0, 0, 150));
+        pathLine = new LineSegment(new Float[]{position[0], position[1]}, new Float[]{position[0] + path[0], position[1] + path[1]}, renderColor);
     }
 
     public void tickUpdate(){
         if(moveTime > delay) {
-            position[0] += path[0] * 1 / moveTime;
-            position[1] += path[1] * 1 / moveTime;
+            position[0] += (path[0] * 1/moveTime)*Main.scene.player.speedMod;
+            position[1] += (path[1] * 1/moveTime)*Main.scene.player.speedMod;
         }
 
         if(Main.scene.tickTime - ct > lifetime){shouldDie = true;}
@@ -33,7 +33,7 @@ public class MovingEnemy extends Point{
     @Override
     public BufferedImage renderOnImage(BufferedImage image){
         image = super.renderOnImage(image);
-        image = pathLine.renderOnImage(image);
+        //image = pathLine.renderOnImage(image);
         return image;
     }
 
