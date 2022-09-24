@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 public class Scene {
-
     int maxEnemyCount;
 
     public Player player;
