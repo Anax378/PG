@@ -44,6 +44,36 @@ public class Scene {
         regenerateScorePoint();
     }
 
+    public static Float[] getElasticDynamicCircleCollisionVelocity(Float[] position1, Float[] position2,Float[] velocity1, Float[] velocity2, float mass1, float mass2){
+        if(containsNull(position1) || containsNull(position2) || containsNull(velocity1) || containsNull(velocity2)){return new Float[]{0f, 0f};}
+        if (mass1+mass2 == 0){return new Float[]{0f, 0f};}
+        float dist = dist(position1, position2);
+        if(dist == 0){return new Float[]{0f, 0f};}
+        Float[] toReturn = new Float[]{0f, 0f};
+        float massCoeficient = ((mass2*2)/(mass1 + mass2));
+        for(int i = 0; i < 2; i++){
+            toReturn[i] = massCoeficient*(avg(velocity1[i]-velocity2[i], position1[i]-position2[i])/dist*dist)-(position1[i]-position2[i]);
+        }
+        return toReturn;
+    }
+    public static float avg(Float a, Float b){
+        return (a+b)/2;
+    }
+
+    public static float dist(Float[] x, Float[] y){
+        if(containsNull(x) || containsNull(y)){return 0;}
+        float a = x[0] - y[0];
+        float b = x[1] - y[1];
+        return (float) Math.sqrt(a*a + b*b);
+    }
+
+
+
+    public static boolean containsNull(Float[] x){
+        if(x[0] == null || x[1] == null){return true;}
+        return false;
+    }
+
     public void tickUpdate(){
         scoreCounter.text = "Score: " + score;
 

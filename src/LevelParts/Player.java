@@ -17,6 +17,8 @@ public class Player extends Point {
 
     public float t = (1f/Main.tps)*speedMod;
 
+    public float mass = radius;
+
     public Player(Float[] position, float radius, Color renderColor){
         super(position, radius, renderColor);
     }
@@ -77,6 +79,8 @@ public class Player extends Point {
         if(position[0]+velocity[0]*t > Main.width-radius || position[0]+velocity[0]*t < 0+radius){
             velocity[0] = velocity[0]*-1*bounceEfficiency;
         }
+
+
         position[0] = position[0]+velocity[0]*t;
 
 
