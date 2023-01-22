@@ -1,9 +1,7 @@
 package Game;
 
 import LevelParts.*;
-import LevelParts.Point;
 
-import javax.swing.text.Position;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,6 +12,8 @@ public class Scene {
     int maxEnemyCount;
 
     public Player player;
+
+    public Boulder boulder;
     public List<LineSegment> lineSegments = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
     public List<MovingEnemy> movingEnemies = new ArrayList<>();
@@ -35,8 +35,9 @@ public class Scene {
 
     public double tickTime = 0;
 
-    public Scene(Player player, int maxEnemyCount){
+    public Scene(Player player,Boulder boulder, int maxEnemyCount){
         this.player = player;
+        this.boulder = boulder;
         this.maxEnemyCount = maxEnemyCount;
         initialPlayerPosition[0] = player.position[0];
         initialPlayerPosition[1] = player.position[1];
@@ -44,26 +45,37 @@ public class Scene {
         regenerateScorePoint();
     }
 
-    public static Float[] getElasticDynamicCircleCollisionVelocity(Float[] position1, Float[] position2,Float[] velocity1, Float[] velocity2, float mass1, float mass2){
-        if(containsNull(position1) || containsNull(position2) || containsNull(velocity1) || containsNull(velocity2)){return new Float[]{0f, 0f};}
-        if (mass1+mass2 == 0){return new Float[]{0f, 0f};}
+    public static Float[][] getElasticDynamicCircleCollisionVelocity(Float[] position1, Float[] position2, Float[] velocity1, Float[] velocity2, float mass1, float mass2){
+        if(containsNull(position1) || containsNull(position2) || containsNull(velocity1) || containsNull(velocity2)){return new Float[][]{velocity1, velocity2};}
+        if (mass1+mass2 == 0){return new Float[][]{velocity1, velocity2};}
+
         float dist = dist(position1, position2);
-        if(dist == 0){return new Float[]{0f, 0f};}
-        Float[] toReturn = new Float[]{0f, 0f};
-        float massCoeficient = ((mass2*2)/(mass1 + mass2));
-        for(int i = 0; i < 2; i++){
-            toReturn[i] = massCoeficient*(avg(velocity1[i]-velocity2[i], position1[i]-position2[i])/dist*dist)-(position1[i]-position2[i]);
-        }
-        return toReturn;
+        if(dist == 0){return new Float[][]{velocity1, velocity2};}
+
+        float[] norm = new float[]{
+                (position2[0]-position1[0])/dist,
+                (position2[1]-position1[1])/dist,};
+        float p = 2*(velocity1[0]*norm[0]+velocity1[1]*norm[1]-velocity2[0]*norm[0]+velocity2[1]*norm[1])/(mass1+mass2);
+        return new Float[][]{
+                new Float[]{
+                        velocity1[0]-p*mass1*norm[0],
+                        velocity1[1]-p*mass1*norm[1]
+                },
+                new Float[]{
+                        velocity2[0]+p*mass2*norm[0],
+                        velocity2[1]+p*mass2*norm[1]
+                }
+        };
+
     }
     public static float avg(Float a, Float b){
         return (a+b)/2;
     }
 
-    public static float dist(Float[] x, Float[] y){
-        if(containsNull(x) || containsNull(y)){return 0;}
-        float a = x[0] - y[0];
-        float b = x[1] - y[1];
+    public static float dist(Float[] n, Float[] o){
+        if(containsNull(n) || containsNull(o)){return 0;}
+        float a = n[0] - o[0];
+        float b = n[1] - o[1];
         return (float) Math.sqrt(a*a + b*b);
     }
 
@@ -88,7 +100,6 @@ public class Scene {
         if(enemies.size()+movingEnemies.size() < maxEnemyCount){
             Random rand = new Random();
             if(rand.nextInt(0, 2) == 1){
-                System.out.println("Here");
                 boolean validPosFound = false;
                 Float[] pos = new Float[]{0f, 0f};
                 while(!validPosFound) {
@@ -129,7 +140,26 @@ public class Scene {
             restart();
         }}
 
-        player.tickUpdate();
+        player.calculatePosition();
+        boulder.calculatePosition();
+
+        player.updatePosition();
+        boulder.updatePosition();
+
+        if(dist(player.position, boulder.position) < player.radius+boulder.radius) {
+            Float[][] result = getElasticDynamicCircleCollisionVelocity(
+                    player.position,
+                    boulder.position,
+                    player.velocity,
+                    boulder.velocity,
+                    player.mass,
+                    boulder.mass
+            );
+            player.velocity = result[0];
+            boulder.velocity = result[1];
+        }
+
+
     }
 
     public Float[] toRenderCoords(Float[] position){
@@ -144,6 +174,7 @@ public class Scene {
         g2d.fillRect(0, 0, Main.width, Main.height);
         g2d.dispose();
 
+        image = boulder.renderOnImage(image);
         image = player.renderOnImage(image);
 
         for(int i = 0; i < lineSegments.size(); i++){image = lineSegments.get(i).renderOnImage(image);}

@@ -1,6 +1,8 @@
 package LevelParts;
 
 import Game.Main;
+import Game.Scene;
+
 import java.awt.* ;
 
 public class Player extends Point {
@@ -17,13 +19,15 @@ public class Player extends Point {
 
     public float t = (1f/Main.tps)*speedMod;
 
+    Float[] calculatedPosition = new Float[]{0f, 0f};
+
     public float mass = radius;
 
     public Player(Float[] position, float radius, Color renderColor){
         super(position, radius, renderColor);
     }
 
-    public void tickUpdate(){
+    public void calculatePosition(){
 
         Main.scene.lineSegments.get(1).p2[0] = position[0]+velocity[0]*0.1f;
         Main.scene.lineSegments.get(1).p2[1] = position[1]+velocity[1]*0.1f;
@@ -67,23 +71,32 @@ public class Player extends Point {
         velocity[1] = velocity[1]+acceleration[1]*t;
 
 
+        if(isColiding(Main.scene.boulder.position, Main.scene.boulder.radius)){
+            Main.Log("Main.scene.player: Collision!");
+
+        }
+
+
 
 
         if(position[1]+velocity[1]*t > Main.height-radius || position[1]+velocity[1]*t < 0+radius){
             velocity[1] = velocity[1]*-1*bounceEfficiency;
-            position[1] = position[1]+velocity[1]*t;
+            calculatedPosition[1] = position[1]+velocity[1]*t;
         }else{
-            position[1] = position[1]+velocity[1]*t;
+            calculatedPosition[1] = position[1]+velocity[1]*t;
         }
 
         if(position[0]+velocity[0]*t > Main.width-radius || position[0]+velocity[0]*t < 0+radius){
             velocity[0] = velocity[0]*-1*bounceEfficiency;
         }
+        calculatedPosition[0] = position[0]+velocity[0]*t;
 
 
-        position[0] = position[0]+velocity[0]*t;
+    }
 
-
+    public void updatePosition(){
+        position[0] = calculatedPosition[0];
+        position[1] = calculatedPosition[1];
     }
 
     public Float[]getForceVector (Float[] pos, Float[] centre, float radius){
