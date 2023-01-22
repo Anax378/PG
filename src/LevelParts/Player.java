@@ -15,7 +15,7 @@ public class Player extends Point {
     public int lastMouseClickCount = 0;
     public float defaultSpeedMod = 0.3f;
     public float speedMod = defaultSpeedMod;
-    public float forceRadius = 80000/radius;
+    public float forceRadius = 100000/radius;
 
     public float t = (1f/Main.tps)*speedMod;
 

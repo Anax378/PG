@@ -35,6 +35,8 @@ public class Scene {
 
     public double tickTime = 0;
 
+    boolean processCollision = true;
+
     public Scene(Player player,Boulder boulder, int maxEnemyCount){
         this.player = player;
         this.boulder = boulder;
@@ -89,7 +91,8 @@ public class Scene {
     public void tickUpdate(){
         scoreCounter.text = "Score: " + score;
 
-        if(player.isColiding(scorePoint.position, player.radius)){score++; regenerateScorePoint();}
+        if(Boulder.isColliding(scorePoint.position, boulder.position, scorePoint.radius, boulder.radius)){score++; regenerateScorePoint();}
+
         tickTime = tickTime + 1*player.speedMod;
 
         int supposedEnemyListSize = enemies.size();
@@ -147,17 +150,21 @@ public class Scene {
         boulder.updatePosition();
 
         if(dist(player.position, boulder.position) < player.radius+boulder.radius) {
-            Float[][] result = getElasticDynamicCircleCollisionVelocity(
-                    player.position,
-                    boulder.position,
-                    player.velocity,
-                    boulder.velocity,
-                    player.mass,
-                    boulder.mass
-            );
-            player.velocity = result[0];
-            boulder.velocity = result[1];
-        }
+            if(processCollision) {
+                Float[][] result = getElasticDynamicCircleCollisionVelocity(
+                        player.position,
+                        boulder.position,
+                        player.velocity,
+                        boulder.velocity,
+                        player.mass,
+                        boulder.mass
+                );
+                player.velocity = result[0];
+                boulder.velocity = result[1];
+                processCollision = false;
+            }
+            //TODO: check if stopped colliding before allowing to collide again
+        }else{processCollision = true;}
 
 
     }

@@ -7,11 +7,11 @@ import java.awt.*;
 
 public class Boulder extends Point {
     public Float[] velocity;
-    public Float[] friction = new Float[]{0.99f, 0.99f};
+    public Float[] friction = new Float[]{0.995f, 0.995f};
     public Float[] gravity = new Float[]{0f, 0f};
     public float bounceEfficiency = 0.9f;
     Float[] acceleration = new Float[]{0f, 0f};
-    public float mass = radius;
+    public float mass = radius/2f;
     float t = (1f/ Main.tps)*Main.player.speedMod;
 
     Float[] calculatedPosition = new Float[]{0f, 0f};
@@ -63,7 +63,7 @@ public class Boulder extends Point {
         position[1] = calculatedPosition[1];
     }
 
-    public boolean isColliding(Float[] position1, Float[] position2, float radius1, float radius2){
+    public static boolean isColliding(Float[] position1, Float[] position2, float radius1, float radius2){
         if(contains_null(position1) || contains_null(position2)){return false;}
         float a = position1[0] - position2[0];
         float b = position1[1] - position2[1];
@@ -87,7 +87,7 @@ public class Boulder extends Point {
 
     float dotProduct(float[] V1, float[] V2) {return V1[0] * V2[0] + V1[1] + V2[1];}
 
-    boolean contains_null(Float[] x) {
+    public static boolean contains_null(Float[] x) {
         return x[0] == null || x[1] == null;
     }
 
