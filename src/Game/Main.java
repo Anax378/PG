@@ -10,7 +10,8 @@ public class Main {
     //TODO: add support for clicking on w.frame to move
     //TODO: add score per second counter
     //TODO: add score per tick counter
-    //TODO: add more boulders ?
+    //TODO: add more boulders
+    //TODO: add tick substeps
     private static boolean AllowLogs = true;
     public static Window w;
     public static Player player;
@@ -51,6 +52,7 @@ public class Main {
             w.setImage(scene.getFrame());
 
             if((System.currentTimeMillis() - start) > (1000f/tps)){
+
                 scene.tickUpdate();
                 start = System.currentTimeMillis();
             }

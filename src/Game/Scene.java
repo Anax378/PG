@@ -28,7 +28,15 @@ public class Scene {
 
     public float scorePointSize = 7f;
     public TextLabel scoreCounter = new TextLabel(new Float[]{10f, 0f}, Color.BLACK);
+    public TextLabel averageScorePerSecondLabel = new TextLabel(new Float[]{200f, 0f}, Color.BLUE);
     public long score = 0;
+
+    public int scoreThisSecond = 0;
+    public int addedScoresCount = 0;
+
+    public int addedScores = 0;
+    public float averageScorePerSecond = 0;
+    long secondStart;
 
     public float maxLifetime = 1100/2;
     public float minLifetime = 500/2;
@@ -37,7 +45,7 @@ public class Scene {
 
     boolean processCollision = true;
 
-    public Scene(Player player,Boulder boulder, int maxEnemyCount){
+    public Scene(Player player,Boulder boulder, int maxEnemyCount) {
         this.player = player;
         this.boulder = boulder;
         this.maxEnemyCount = maxEnemyCount;
@@ -45,7 +53,9 @@ public class Scene {
         initialPlayerPosition[1] = player.position[1];
         scorePoint = new ScorePoint(new Float[] {0f, 0f}, scorePointSize, Color.GREEN);
         regenerateScorePoint();
+        secondStart = System.currentTimeMillis();
     }
+
 
     public static Float[][] getElasticDynamicCircleCollisionVelocity(Float[] position1, Float[] position2, Float[] velocity1, Float[] velocity2, float mass1, float mass2){
         if(containsNull(position1) || containsNull(position2) || containsNull(velocity1) || containsNull(velocity2)){return new Float[][]{velocity1, velocity2};}
@@ -90,8 +100,20 @@ public class Scene {
 
     public void tickUpdate(){
         scoreCounter.text = "Score: " + score;
+        averageScorePerSecondLabel.text = "Average SPS: " + averageScorePerSecond;
 
-        if(Boulder.isColliding(scorePoint.position, boulder.position, scorePoint.radius, boulder.radius)){score++; regenerateScorePoint();}
+        if(Boulder.isColliding(scorePoint.position, boulder.position, scorePoint.radius, boulder.radius)){
+            score++;
+            regenerateScorePoint();
+            scoreThisSecond++;
+        }
+        if(System.currentTimeMillis() - secondStart >= 1000){
+            secondStart = System.currentTimeMillis();
+            addedScores += scoreThisSecond;
+            scoreThisSecond = 0;
+            addedScoresCount++;
+            if(addedScoresCount != 0){averageScorePerSecond = (float) addedScores / addedScoresCount;}
+        }
 
         tickTime = tickTime + 1*player.speedMod;
 
@@ -163,7 +185,6 @@ public class Scene {
                 boulder.velocity = result[1];
                 processCollision = false;
             }
-            //TODO: check if stopped colliding before allowing to collide again
         }else{processCollision = true;}
 
 
@@ -189,6 +210,7 @@ public class Scene {
         for(int i = 0; i < movingEnemies.size(); i++){image = movingEnemies.get(i).renderOnImage(image);}
         image = scorePoint.renderOnImage(image);
         image = scoreCounter.renderOnImage(image);
+        image = averageScorePerSecondLabel.renderOnImage(image);
 
         return image;
     }
@@ -226,6 +248,9 @@ public class Scene {
         }
         scorePoint.position[0] = position[0];
         scorePoint.position[1] = position[1];
+
+//        scorePoint.position[0] = boulder.position[0];
+//        scorePoint.position[1] = boulder.position[1];
     }
 
     public static float pyth(Float[] vec1, Float[] vec2){

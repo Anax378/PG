@@ -72,7 +72,6 @@ public class Player extends Point {
 
 
         if(isColiding(Main.scene.boulder.position, Main.scene.boulder.radius)){
-            Main.Log("Main.scene.player: Collision!");
 
         }
 

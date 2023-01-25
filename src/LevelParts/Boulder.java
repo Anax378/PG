@@ -38,7 +38,6 @@ public class Boulder extends Point {
 
 
             if (isColliding(position, Main.player.position, radius, Main.player.radius)) {
-                Main.Log("Main.scene.boulder: Collision!");
 
             }
 
