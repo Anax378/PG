@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class Main {
 
-    //TODO: add support for clicking on w.frame to move
     //TODO: add score per second counter
     //TODO: add score per tick counter
     //TODO: add more boulders

@@ -3,6 +3,7 @@ package LevelParts;
 import Game.Main;
 import Game.Scene;
 
+import javax.swing.*;
 import java.awt.* ;
 
 public class Player extends Point {
@@ -42,8 +43,14 @@ public class Player extends Point {
 
         if(Main.w.isMouseDown){
             lastMouseClickCount = Main.w.mouseClickCount;
-            java.awt.Point mousePosition = Main.w.label.getMousePosition();
+            java.awt.Point mousePosition = Main.w.frame.getMousePosition();
+
+
+
             if(mousePosition != null) {
+
+                mousePosition.x -= Main.w.panel.getComponent(0).getX();
+                mousePosition.y -= Main.w.panel.getComponent(0).getY() + 34;
 
                 Main.scene.lineSegments.get(0).renderColor = Color.GREEN;
 
