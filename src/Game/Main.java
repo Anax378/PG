@@ -7,7 +7,6 @@ import java.awt.*;
 
 public class Main {
 
-    //TODO: add score per second counter
     //TODO: add score per tick counter
     //TODO: add more boulders
     //TODO: add tick substeps
@@ -20,8 +19,10 @@ public class Main {
 
     public static int width = 600;
     public static int height = 600;
-    public static int tps = 100;
 
+    public static int ssps = 1;
+    public static int sps = 100;
+    public static int tps = sps*ssps;
     public static boolean isRunning = true;
 
     public static void Log(String message){
@@ -46,15 +47,26 @@ public class Main {
 
 
         long start = System.currentTimeMillis();
+        long beg = System.currentTimeMillis();
+        int measurredTPS = 0;
         while (isRunning) // game loop
         {
             w.setImage(scene.getFrame());
 
-            if((System.currentTimeMillis() - start) > (1000f/tps)){
-
-                scene.tickUpdate();
+            if((System.currentTimeMillis() - start) > (1000f/sps)){
+                for(int i = 0; i < ssps; i++){
+                    scene.tickUpdate();
+                    measurredTPS++;
+                }
                 start = System.currentTimeMillis();
             }
+
+            if(beg - System.currentTimeMillis() < -1000){
+                beg = System.currentTimeMillis();
+                Log("TPS: " + measurredTPS);
+                measurredTPS = 0;
+            }
+
 
         }
 
