@@ -12,8 +12,6 @@ public class Scene {
     int maxEnemyCount;
 
     public Player player;
-
-    public Boulder boulder;
     public List<LineSegment> lineSegments = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
     public List<MovingEnemy> movingEnemies = new ArrayList<>();
@@ -45,9 +43,8 @@ public class Scene {
 
     boolean processCollision = true;
 
-    public Scene(Player player,Boulder boulder, int maxEnemyCount) {
+    public Scene(Player player, int maxEnemyCount) {
         this.player = player;
-        this.boulder = boulder;
         this.maxEnemyCount = maxEnemyCount;
         initialPlayerPosition[0] = player.position[0];
         initialPlayerPosition[1] = player.position[1];
@@ -102,7 +99,7 @@ public class Scene {
         scoreCounter.text = "Score: " + score;
         averageScorePerSecondLabel.text = "Average SPS: " + averageScorePerSecond;
 
-        if(Boulder.isColliding(scorePoint.position, boulder.position, scorePoint.radius, boulder.radius)){
+        if(player.isColiding(scorePoint.position, scorePoint.radius)){
             score++;
             regenerateScorePoint();
             scoreThisSecond++;
@@ -166,28 +163,7 @@ public class Scene {
         }}
 
         player.calculatePosition();
-        boulder.calculatePosition();
-
         player.updatePosition();
-        boulder.updatePosition();
-
-        if(dist(player.position, boulder.position) < player.radius+boulder.radius) {
-            if(processCollision) {
-                Float[][] result = getElasticDynamicCircleCollisionVelocity(
-                        player.position,
-                        boulder.position,
-                        player.velocity,
-                        boulder.velocity,
-                        player.mass,
-                        boulder.mass
-                );
-                player.velocity = result[0];
-                boulder.velocity = result[1];
-                processCollision = false;
-            }
-        }else{processCollision = true;}
-
-
     }
 
     public Float[] toRenderCoords(Float[] position){
@@ -202,7 +178,6 @@ public class Scene {
         g2d.fillRect(0, 0, Main.width, Main.height);
         g2d.dispose();
 
-        image = boulder.renderOnImage(image);
         image = player.renderOnImage(image);
 
         for(int i = 0; i < lineSegments.size(); i++){image = lineSegments.get(i).renderOnImage(image);}

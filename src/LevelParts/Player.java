@@ -77,14 +77,6 @@ public class Player extends Point {
         velocity[0] = velocity[0]+acceleration[0]*t;
         velocity[1] = velocity[1]+acceleration[1]*t;
 
-
-        if(isColiding(Main.scene.boulder.position, Main.scene.boulder.radius)){
-
-        }
-
-
-
-
         if(position[1]+velocity[1]*t > Main.height-radius || position[1]+velocity[1]*t < 0+radius){
             velocity[1] = velocity[1]*-1*bounceEfficiency;
             calculatedPosition[1] = position[1]+velocity[1]*t;

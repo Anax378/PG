@@ -8,8 +8,6 @@ import java.awt.*;
 public class Main {
 
     //TODO: add score per tick counter
-    //TODO: add more boulders
-    //TODO: add tick substeps
     private static boolean AllowLogs = true;
     public static Window w;
     public static Player player;
@@ -35,14 +33,11 @@ public class Main {
         w = new Window(width, height);
 
         player = new Player(new Float[]{300f, 300f}, 10f, Color.BLACK);
-        boulder = new Boulder(new Float[]{500f, 500f}, 10f, Color.BLUE);
-        scene = new Scene(player, boulder, 0);
+        scene = new Scene(player, 0);
 
 
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.RED));
-
-        scene.add(new LineSegment(scene.boulder.position, new Float[]{0f, 0f}, Color.GREEN));
 
 
 
