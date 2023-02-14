@@ -1,7 +1,6 @@
-package LevelParts;
+package levelParts;
 
-import Game.Main;
-import Game.Scene;
+import game.Main;
 
 import java.awt.*;
 
@@ -35,11 +34,6 @@ public class Boulder extends Point {
 
             velocity[0] += acceleration[0] * t;
             velocity[1] += acceleration[1] * t;
-
-
-            if (isColliding(position, Main.player.position, radius, Main.player.radius)) {
-
-            }
 
             if(position[1]+velocity[1]*t > Main.height-radius || position[1]+velocity[1]*t < 0+radius){
                 velocity[1] = velocity[1]*-1*bounceEfficiency;

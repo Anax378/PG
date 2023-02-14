@@ -1,6 +1,6 @@
-package Game;
+package game;
 
-import LevelParts.*;
+import levelParts.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,8 +30,8 @@ public class Scene {
     public TextLabel bestAverageLabel = new TextLabel(new Float[]{200f, 60f}, new Color(0, 0, 0, 150));
     public long score = 0;
 
-    public float maxLifetime = 1100/2;
-    public float minLifetime = 500/2;
+    public float maxLifetime = 1100/2f;
+    public float minLifetime = 500/2f;
 
     float currentAverage = 0;
 
@@ -71,9 +71,6 @@ public class Scene {
         };
 
     }
-    public static float avg(Float a, Float b){
-        return (a+b)/2;
-    }
 
     public static float dist(Float[] n, Float[] o){
         if(containsNull(n) || containsNull(o)){return 0;}
@@ -85,8 +82,7 @@ public class Scene {
 
 
     public static boolean containsNull(Float[] x){
-        if(x[0] == null || x[1] == null){return true;}
-        return false;
+        return x[0] == null || x[1] == null;
     }
 
     public void tickUpdate(){

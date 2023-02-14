@@ -1,7 +1,6 @@
-package Game;
-import LevelParts.Boulder;
-import LevelParts.LineSegment;
-import LevelParts.Player;
+package game;
+import levelParts.LineSegment;
+import levelParts.Player;
 
 import java.awt.*;
 
@@ -9,8 +8,6 @@ public class Main {
     private static final boolean AllowLogs = true;
     public static Window w;
     public static Player player;
-
-    public static Boulder boulder;
     public static Scene scene;
 
     public static int width = 600;

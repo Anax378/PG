@@ -1,9 +1,7 @@
-package LevelParts;
+package levelParts;
 
-import Game.Main;
-import Game.Scene;
+import game.Main;
 
-import javax.swing.*;
 import java.awt.* ;
 
 public class Player extends Point {
@@ -57,8 +55,8 @@ public class Player extends Point {
 
                 Float[] forceVector = getForceVector(new Float[]{(float)mousePosition.x, (float)mousePosition.y}, position, forceRadius);
 
-                Main.scene.lineSegments.get(0).p2[0] = (float) position[0] + forceVector[0]*0.001f*radius;
-                Main.scene.lineSegments.get(0).p2[1] = (float) position[1] + forceVector[1]*0.001f*radius;
+                Main.scene.lineSegments.get(0).p2[0] = position[0] + forceVector[0]*0.001f*radius;
+                Main.scene.lineSegments.get(0).p2[1] = position[1] + forceVector[1]*0.001f*radius;
 
 
                 acceleration[0] = acceleration[0] + (forceVector[0]);

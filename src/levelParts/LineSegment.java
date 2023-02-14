@@ -1,6 +1,6 @@
-package LevelParts;
+package levelParts;
 
-import Game.Main;
+import game.Main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

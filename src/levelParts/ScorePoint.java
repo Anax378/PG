@@ -1,4 +1,4 @@
-package LevelParts;
+package levelParts;
 
 import java.awt.*;
 
