@@ -6,9 +6,7 @@ import LevelParts.Player;
 import java.awt.*;
 
 public class Main {
-
-    //TODO: add score per tick counter
-    private static boolean AllowLogs = true;
+    private static final boolean AllowLogs = true;
     public static Window w;
     public static Player player;
 

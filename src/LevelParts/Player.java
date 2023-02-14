@@ -50,7 +50,7 @@ public class Player extends Point {
             if(mousePosition != null) {
 
                 mousePosition.x -= Main.w.panel.getComponent(0).getX();
-                mousePosition.y -= Main.w.panel.getComponent(0).getY() + 34;
+                mousePosition.y -= Main.w.panel.getComponent(0).getY()+32;
 
                 Main.scene.lineSegments.get(0).renderColor = Color.GREEN;
 

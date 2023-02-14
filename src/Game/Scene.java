@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 public class Scene {
+    public int  ticksSinceStart;
     int maxEnemyCount;
-
     public Player player;
     public List<LineSegment> lineSegments = new ArrayList<>();
     public List<Enemy> enemies = new ArrayList<>();
@@ -28,21 +28,15 @@ public class Scene {
     public TextLabel scoreCounter = new TextLabel(new Float[]{10f, 0f}, Color.BLACK);
     public TextLabel averageScorePerSecondLabel = new TextLabel(new Float[]{200f, 0f}, Color.BLUE);
     public long score = 0;
-
-    public int scoreThisSecond = 0;
-    public int addedScoresCount = 0;
-
-    public int addedScores = 0;
     public float averageScorePerSecond = 0;
     long secondStart;
 
     public float maxLifetime = 1100/2;
     public float minLifetime = 500/2;
 
+    float currentAverage = 0;
+
     public double tickTime = 0;
-
-    boolean processCollision = true;
-
     public Scene(Player player, int maxEnemyCount) {
         this.player = player;
         this.maxEnemyCount = maxEnemyCount;
@@ -96,21 +90,16 @@ public class Scene {
     }
 
     public void tickUpdate(){
+        ticksSinceStart++;
         scoreCounter.text = "Score: " + score;
-        averageScorePerSecondLabel.text = "Average SPS: " + averageScorePerSecond;
-
+        averageScorePerSecondLabel.text = "Average SP1000T: " + currentAverage;
+        currentAverage = (float) score/((float) ticksSinceStart/1000f);
         if(player.isColiding(scorePoint.position, scorePoint.radius)){
             score++;
             regenerateScorePoint();
-            scoreThisSecond++;
         }
-        if(System.currentTimeMillis() - secondStart >= 1000){
-            secondStart = System.currentTimeMillis();
-            addedScores += scoreThisSecond;
-            scoreThisSecond = 0;
-            addedScoresCount++;
-            if(addedScoresCount != 0){averageScorePerSecond = (float) addedScores / addedScoresCount;}
-        }
+
+
 
         tickTime = tickTime + 1*player.speedMod;
 
