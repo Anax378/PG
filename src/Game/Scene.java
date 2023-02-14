@@ -25,16 +25,17 @@ public class Scene {
     public float minMovingEnemySpeed = 1; //pixels per tickTimeUnit
 
     public float scorePointSize = 7f;
-    public TextLabel scoreCounter = new TextLabel(new Float[]{10f, 0f}, Color.BLACK);
-    public TextLabel averageScorePerSecondLabel = new TextLabel(new Float[]{200f, 0f}, Color.BLUE);
+    public TextLabel scoreCounter = new TextLabel(new Float[]{200f, 0f}, new Color(0, 0, 0, 150));
+    public TextLabel averageScorePerThousandTicks = new TextLabel(new Float[]{200f, 30f}, new Color(0, 0, 0, 150));
+    public TextLabel bestAverageLabel = new TextLabel(new Float[]{200f, 60f}, new Color(0, 0, 0, 150));
     public long score = 0;
-    public float averageScorePerSecond = 0;
-    long secondStart;
 
     public float maxLifetime = 1100/2;
     public float minLifetime = 500/2;
 
     float currentAverage = 0;
+
+    float bestAverage = 0;
 
     public double tickTime = 0;
     public Scene(Player player, int maxEnemyCount) {
@@ -44,7 +45,6 @@ public class Scene {
         initialPlayerPosition[1] = player.position[1];
         scorePoint = new ScorePoint(new Float[] {0f, 0f}, scorePointSize, Color.GREEN);
         regenerateScorePoint();
-        secondStart = System.currentTimeMillis();
     }
 
 
@@ -90,9 +90,11 @@ public class Scene {
     }
 
     public void tickUpdate(){
+        if(currentAverage > bestAverage){bestAverage = currentAverage;}
         ticksSinceStart++;
         scoreCounter.text = "Score: " + score;
-        averageScorePerSecondLabel.text = "Average SP1000T: " + currentAverage;
+        averageScorePerThousandTicks.text = "SP1000T: " + currentAverage;
+        bestAverageLabel.text = "Best SP1000T: " + bestAverage;
         currentAverage = (float) score/((float) ticksSinceStart/1000f);
         if(player.isColiding(scorePoint.position, scorePoint.radius)){
             score++;
@@ -174,7 +176,8 @@ public class Scene {
         for(int i = 0; i < movingEnemies.size(); i++){image = movingEnemies.get(i).renderOnImage(image);}
         image = scorePoint.renderOnImage(image);
         image = scoreCounter.renderOnImage(image);
-        image = averageScorePerSecondLabel.renderOnImage(image);
+        image = averageScorePerThousandTicks.renderOnImage(image);
+        image = bestAverageLabel.renderOnImage(image);
 
         return image;
     }
@@ -188,6 +191,9 @@ public class Scene {
 
     public void restart(){
         score = 0;
+        bestAverage = 0;
+        currentAverage = 0;
+        ticksSinceStart = 0;
         player.position[0] = initialPlayerPosition[1];
         player.position[1] = initialPlayerPosition[1];
 
@@ -212,9 +218,6 @@ public class Scene {
         }
         scorePoint.position[0] = position[0];
         scorePoint.position[1] = position[1];
-
-//        scorePoint.position[0] = boulder.position[0];
-//        scorePoint.position[1] = boulder.position[1];
     }
 
     public static float pyth(Float[] vec1, Float[] vec2){

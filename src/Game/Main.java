@@ -31,7 +31,7 @@ public class Main {
         w = new Window(width, height);
 
         player = new Player(new Float[]{300f, 300f}, 10f, Color.BLACK);
-        scene = new Scene(player, 0);
+        scene = new Scene(player, 20);
 
 
         scene.add(new LineSegment(scene.player.position, new Float[]{0f, 0f}, Color.GREEN));

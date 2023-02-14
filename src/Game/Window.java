@@ -36,8 +36,9 @@ public class Window {
         label = new JLabel(icon);
 
         panel.add(label);
-        frame.add(panel);
+        panel.setLayout(new GridBagLayout());
 
+        frame.add(panel);
         frame.setSize(width, height+40);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(true);
