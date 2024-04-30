@@ -1,4 +1,4 @@
-# physicGame\
+# physicGame
 \
 collect green dots in order to score point.\
 avoid red circles\
