@@ -89,8 +89,8 @@ public class Scene {
         if(currentAverage > bestAverage){bestAverage = currentAverage;}
         ticksSinceStart++;
         scoreCounter.text = "Score: " + score;
-        averageScorePerThousandTicks.text = "SP1000T: " + currentAverage;
-        bestAverageLabel.text = "Best SP1000T: " + bestAverage;
+        averageScorePerThousandTicks.text = "S/1000t: " + currentAverage;
+        bestAverageLabel.text = "Best S/1000t: " + bestAverage;
         currentAverage = (float) score/((float) ticksSinceStart/1000f);
         if(player.isColiding(scorePoint.position, scorePoint.radius)){
             score++;
